@@ -43,6 +43,29 @@ function getTable() {
     console.log("\n");
     return results;
   });
+    start();
 }
 
-
+function start() {
+  // query the database for all items being auctioned
+  connection.query("SELECT * FROM products", function(err, results) {
+    if (err) throw err;
+    console.log(results);
+    connection.end();
+    inquirer.prompt([
+      {
+        name: "choice",
+        type: "input",
+        message: "What item would you like to buy?",
+      }
+    ])
+    .then(function(answer) {
+      //get the item ID of the chosen item
+      var chosenItem; 
+      for (var i=0; i < results.length; i++) {
+        chosenItem = results[i];
+      }
+    })
+  });
+}
+    
