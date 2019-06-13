@@ -49,7 +49,7 @@ function start() {
   var query = "SELECT * FROM products";
   connection.query(query, function (err, results) {
     if (err) throw err;
-    console.log(results);
+    //console.log(results);
     inquirer.prompt([
       {
       name: "itemId",
@@ -61,14 +61,52 @@ function start() {
       message: "How many units would you like to buy?: "
     }])
       .then(function (answer) {
+        // get the information of the chosen item.  Activity 10.  
         var chosenItem;
         for (var i = 0; i < results.length; i++) {
-          if (results[i].item_ === answer.choice) {
-            chosenItem = results[i];
-          }
+            if (results[i].item_id === answer.itemId) {
+                chosenItem = results[i];
+            }
         }
-        console.log(chosenItem);
-      // { of .then
+        // console.log(chosenItem);
+        if (chosenItem.stock_quantity >= parseInt(answer.purchase)) {
+          
+            var newQuantity = chosenItem.stock_quantity - answer.purchase;
+            // console.log(newQuantity);
+            connection.query('UPDATE products SET ? WHERE ?', 
+            [
+              {
+                    stock_quantity: newQuantity
+              }, 
+              
+              {
+                    item_id: chosenItem.item_id
+
+              }
+            ], 
+            
+            function(error) {
+                    if (error) throw err;
+                    console.log("Order successful!");
+                    console.log("Total cost: " + (answer.purchase * chosenItem.price));
+                    start();
+                }
+            )
+        } else if (chosenItem.stock_quantity <= 0) {
+
+            connection.query("DELETE FROM products WHERE ?", {
+                item_id: chosenItem.item_id
+            }, function(err, res) {
+
+                console.log("Sorry, item is SOLD OUT!");
+                start();
+            });
+
+        } else {
+            console.log("Insufficient quantity. Try again...");
+            start();
+        };
+      // closing bracket of .then
       });
   });
 }
