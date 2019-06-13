@@ -50,37 +50,24 @@ function start() {
   connection.query(query, function (err, results) {
     if (err) throw err;
     console.log(results);
-    inquirer.prompt([{
+    inquirer.prompt([
+      {
       name: "itemId",
       type: "input",
-      message: "What item would you like to purchase? ",
-      validate: function (value) {
-        if (isNaN(value) === false) {
-          return true;
-        }
-        return false;
-      }
+      message: "What item would you like to purchase? "
     }, {
       name: "purchase",
       type: "input",
-      message: "How many units would you like to buy?: ",
-      validate: function (value) {
-        if (isNaN(value) === false) {
-          return true;
-        }
-        return false;
-      }
+      message: "How many units would you like to buy?: "
     }])
       .then(function (answer) {
-        //Query db for items in Stock 
-        connection.query("SELECT * FROM products", {
-          item_id: answer.id
-        },
-          function (err, response) {
-           
-
-          });
-
+        var chosenItem;
+        for (var i = 0; i < results.length; i++) {
+          if (results[i].item_ === answer.choice) {
+            chosenItem = results[i];
+          }
+        }
+        console.log(chosenItem);
       // { of .then
       });
   });
