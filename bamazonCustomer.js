@@ -47,16 +47,16 @@ function displayProducts() {
 function start() {
   // Activity 10 
   var query = "SELECT * FROM products";
-  connection.query(query, function (err, results) {
+  connection.query(query, function (err, response) {
     if (err) throw err;
-    //console.log(results);
+    //console.log(response);
     inquirer.prompt([
       {
         name: "itemId",
         type: "input",
         message: "What item would you like to purchase? "
       }, {
-        name: "purchase",
+        name: "quantity",
         type: "input",
         message: "How many units would you like to buy?: "
       }])
@@ -72,11 +72,11 @@ function start() {
             }
           }
 
-          if (chosenItem.stock_quantity >= parseInt(answer.purchase)) {
+          if (chosenItem.stock_quantity >= parseInt(answer.quantity)) {
 
-            var newQuantity = chosenItem.stock_quantity - answer.purchase;
-            // console.log(newQuantity);
-            connection.query('UPDATE products SET ? WHERE ?',
+            var newQuantity = chosenItem.stock_quantity - answer.quantity;
+            console.log(newQuantity);
+            connection.query("UPDATE * from products",
               [
                 {
                   stock_quantity: newQuantity
@@ -91,7 +91,7 @@ function start() {
               function (error) {
                 if (error) throw err;
                 console.log("Order successful!");
-                console.log("Total cost: " + (answer.purchase * chosenItem.price));
+                console.log("Total cost: " + (answer.quantity * chosenItem.price));
                 start();
               }
             )
