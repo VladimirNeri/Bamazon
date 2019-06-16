@@ -82,8 +82,7 @@ function start() {
               id: answer.itemId
             }], function(err, results){});
             //update departments table
-            // logSaleToDepartment();
-            start();
+            newOrder();
           }
         })
         // closing bracket of .then
@@ -91,3 +90,20 @@ function start() {
   });
 }
 
+function newOrder(){
+	inquirer.prompt([{
+		type: 'confirm',
+		name: 'choice',
+		message: 'Would you like to place another order?'
+	}]).then(function(answer){
+		if(answer.choice){
+			start();
+		}
+		else{
+			console.log('Thank you for shopping at Bamazon!');
+			connection.end();
+		}
+	})
+};
+
+displayProducts();
