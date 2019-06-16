@@ -25,14 +25,14 @@ function displayProducts() {
   var query = "SELECT * FROM products";
   connection.query(query, function (error, results) {
     var table = new Table({
-      head: ["Item", "Product", "Department", "Price"],
-      colWidths: [10, 30, 20, 10]
+      head: ["Item", "Product", "Department", "Price", "Stock"],
+      colWidths: [10, 30, 20, 12, 8]
     });
 
     //Push Items to Table Array
     for (var i = 0; i < results.length; i++) {
       table.push(
-        [results[i].item_id, results[i].product_name, results[i].department_name, numeral(results[i].price).format("$0,0.00")]
+        [results[i].item_id, results[i].product_name, results[i].department_name, numeral(results[i].price).format("$0,0.00"), results[i].stock_quantity]
       );
     }
 
@@ -54,11 +54,23 @@ function start() {
       {
         name: "itemId",
         type: "input",
-        message: "What item would you like to purchase? "
+        message: "What item would you like to purchase? ",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
       }, {
         name: "quantity",
         type: "input",
-        message: "How many units would you like to buy?: "
+        message: "How many units would you like to buy?: ",
+        validate: function(value) {
+          if (isNaN(value) === false) {
+            return true;
+          }
+          return false;
+        }
       }])
       .then(function (answer) {
         // get the information of the chosen item.  Activity 10.  
@@ -67,7 +79,6 @@ function start() {
             console.log('Insufficient Quantity');
             console.log('This order has been cancelled');
             console.log('');
-            start();
           }
           else{
             amountOwed = results[0].price * answer.quantity;
