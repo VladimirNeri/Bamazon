@@ -3,7 +3,7 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require("cli-table");
 var numeral = require("numeral");
-var chalk = require("chalk");
+
 
 //MYSQL Connection Activity 06
 var connection = mysql.createConnection({
