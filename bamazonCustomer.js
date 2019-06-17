@@ -78,19 +78,21 @@ function start() {
             console.log('Insufficient Quantity');
             console.log('This order has been cancelled');
             console.log('');
+            newOrder();
           }
           else{
             amountOwed = results[0].price * answer.quantity;
             currentDepartment = results[0].DepartmentName;
-            console.log('Thanks for your order');
-            console.log('You owe $' + amountOwed);
-            console.log('');
+            console.log("Thanks for your order");
+            console.log("You owe $" + amountOwed);
+            console.log("");
             //update products table
-            connection.query('UPDATE products SET ? Where ?', [{
-              stock_quantity: results[0].stock_quantity - answer.quantity
-            },{
-              id: answer.itemId
-            }], function(err, results){});
+            // UPDATE table_name SET column_name =column_name =  value [, value ...]
+
+            
+            connection.query("UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?", [answer.quantity, answer.itemId], function(err, results){
+              console.log('Successfully purchased ' + answer.quantity);
+            });
             newOrder();
           }
         })
@@ -106,7 +108,7 @@ function newOrder(){
 		message: 'Would you like to place another order?'
 	}]).then(function(answer){
 		if(answer.choice){
-			start();
+      displayProducts();
 		}
 		else{
 			console.log('Thank you for shopping at Bamazon!');
