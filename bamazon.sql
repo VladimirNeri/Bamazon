@@ -22,8 +22,7 @@ VALUES ("Computer", "Electronics", 1200.00, 10),
 ("Shelf", "Furniture", 100.00, 15),
 ("Eggs", "Groceries", 5.00, 200),
 ("Milk", "Groceries", 3.00, 30),
-("Coffee", "Groceries", 15.00, 20),
-("Beer", "Groceries", 10.00, 10);
+("Covfefe", "Groceries", 15.00, 20),
+("Hamberders", "Groceries", 10.00, 10);
 
 SELECT * FROM products;
-
