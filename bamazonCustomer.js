@@ -91,7 +91,6 @@ function start() {
             },{
               id: answer.itemId
             }], function(err, results){});
-            //update departments table
             newOrder();
           }
         })
