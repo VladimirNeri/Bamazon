@@ -75,9 +75,9 @@ function start() {
         // get the information of the chosen item.  Activity 10.  
         connection.query("SELECT * FROM products WHERE item_id = ?", [answer.itemId], function (err, results) {
           if(answer.quantity > results[0].stock_quantity){
-            console.log('Insufficient Quantity');
-            console.log('This order has been cancelled');
-            console.log('');
+            console.log("Insufficient Quantity");
+            console.log("This order has been cancelled");
+            console.log("");
             newOrder();
           }
           else{
@@ -91,7 +91,7 @@ function start() {
 
             
             connection.query("UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?", [answer.quantity, answer.itemId], function(err, results){
-              console.log('Successfully purchased ' + answer.quantity);
+              console.log("Successfully purchased " + answer.quantity);
             });
             newOrder();
           }
@@ -103,15 +103,15 @@ function start() {
 
 function newOrder(){
 	inquirer.prompt([{
-		type: 'confirm',
-		name: 'choice',
-		message: 'Would you like to place another order?'
+		type: "confirm",
+		name: "choice",
+		message: "Would you like to place another order?"
 	}]).then(function(answer){
 		if(answer.choice){
       displayProducts();
 		}
 		else{
-			console.log('Thank you for shopping at Bamazon!');
+			console.log("Thank you for shopping at Bamazon!");
 			connection.end();
 		}
 	})
