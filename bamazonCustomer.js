@@ -73,7 +73,7 @@ function start() {
       }])
       .then(function (answer) {
         // get the information of the chosen item.  Activity 10.  
-        connection.query("SELECT * FROM products", function (err, results) {
+        connection.query("SELECT * FROM products WHERE item_id = ?", [answer.itemId], function (err, results) {
           if(answer.quantity > results[0].stock_quantity){
             console.log('Insufficient Quantity');
             console.log('This order has been cancelled');
